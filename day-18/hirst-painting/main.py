@@ -1,10 +1,32 @@
-###This code will not work in repl.it as there is no access to the colorgram package here.###
-##We talk about this in the video tutorials##
-import colorgram
+import turtle as t
+import random
 
-rgb_colors = []
-colors = colorgram.extract('image.jpg', 30)
-for color in colors:
-    rgb_colors.append(color.rgb)
+t.colormode(255)
+tim = t.Turtle()
+tim.speed("fastest")
+tim.penup()
+tim.hideturtle()
+tim.setpos(-200, -200)
 
-print(rgb_colors)
+
+def random_color():
+    r = random.randint(0, 255)
+    g = random.randint(0, 255)
+    b = random.randint(0, 255)
+    color = (r, g, b)
+    return color
+
+
+for c in range(10):
+    for n in range(10):
+        tim.color(random_color())
+        tim.dot(20)
+        tim.forward(50)
+    tim.left(90)
+    tim.forward(50)
+    tim.left(90)
+    tim.forward(500)
+    tim.left(180)
+    
+screen = t.Screen()
+screen.exitonclick()
