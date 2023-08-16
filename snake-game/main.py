@@ -29,8 +29,4 @@ while game_in_on:
     turtles[0].forward(20)
 
 
-
-
-
-
 screen.exitonclick()
