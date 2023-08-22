@@ -37,10 +37,8 @@ while game_in_on:
         game_in_on = False
         score.game_over()
 
-    for turtle in snake.turtles:
-        if turtle == snake.head:
-            pass
-        elif snake.head.distance(turtle) < 10:
+    for turtle in snake.turtles[1:]:
+        if snake.head.distance(turtle) < 10:
             game_in_on = False
             score.game_over()
 
