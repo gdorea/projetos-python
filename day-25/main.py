@@ -24,5 +24,18 @@ print(data_dict)
 temp_list = data["temp"].to_list()
 print(temp_list)
 
-avarage_temperature = sum(temp_list)/len(temp_list)
-print(round(avarage_temperature))
+print(data["temp"].mean())
+print(data["temp"].max())
+
+#Get data in columns 
+print(data["condition"])
+print(data.condition)
+
+#Get data in row
+print(data[data.day == "Monday"]) #Pega a linha com o dia Monday
+
+print(data[data.temp == data.temp.max()]) #Pega a linha com a maior temperatura da semana
+
+monday = data[data.day == "Monday"]
+print(monday.condition)
+print((monday.temp[0] * 1.8) + 32)
