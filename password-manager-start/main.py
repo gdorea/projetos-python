@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import messagebox
 import random
 import pyperclip
+import json
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 def password_generator():
@@ -34,14 +35,25 @@ def save():
     website_input = website_entry.get()
     email_input = email_entry.get()
     password_input = password_entry.get()
-    if website_input == "" or password_input == "":
+    new_data = {
+        website_input: {
+            "email": email_input,
+            "password": password_input,
+        }
+    }
+    if len(website_input) == 0 or len(password_input) == 0:
         messagebox.showerror(title="Oops", message="Please, don't leave any fields empty!")
     else:
-        is_ok = messagebox.askokcancel(title=website_input, message=f"These are the details entered: \nEmail: {email_input} \nPassword: {password_input} \nIs it ok to save?")
-        if is_ok:
-            data = open("./password-manager-start/data.txt", "a")
-            data.write(f"{website_input} | {email_input} | {password_input}\n")
-            data.close()
+        with open("./password-manager-start/data.json", "r") as data_file:
+            #Reading old data
+            data = json.load(data_file)
+            #Updating old data with new data
+            data.update(new_data)
+
+        with open("./password-manager-start/data.json", "w") as data_file:
+            #Saving updated data
+            json.dump(data, data_file, indent=4)
+        
             website_entry.delete(0, END)
             password_entry.delete(0, END)
 
