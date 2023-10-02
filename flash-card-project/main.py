@@ -10,7 +10,7 @@ current_card = {}
 
 def next_card():
     global current_card, flip_timer
-    window.after_cancel(flip_timer)
+    window.after_cancel(flip_timer) #está em vermelho pq esperava um comando e não uma variável, mas está funcionando
     current_card = random.choice(data_dict)
     canvas.itemconfig(card_title, text="French", fill="black")
     canvas.itemconfig(card_word, text=current_card["French"], fill="black")
@@ -37,8 +37,6 @@ card_title = canvas.create_text(400, 150, text="", font=("Ariel", 40, "italic"))
 card_word = canvas.create_text(400, 263, text="", font=("Ariel", 60, "bold"))
 
 flash_card_back = PhotoImage(file="./flash-card-project/images/card_back.png")
-
-
 
 wrong_img = PhotoImage(file="./flash-card-project/images/wrong.png")
 wrong_button = Button(image=wrong_img, background=BACKGROUND_COLOR, highlightthickness=0, command=next_card)
