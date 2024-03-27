@@ -1,10 +1,15 @@
 import requests
+import os
+from twilio.rest import Client
 
 api_key = "5791e486f3436f2600f0f91957f9246a"
 
+account_sid = os.environ["ACf56ab9e600b235fdf9aef11e2ec0f778"]
+auth_token = os.environ["c790615189784d3a1d2dacb663e3da31"]
+
 parameters = {
-    "lat": -7.192070,
-    "lon": -48.207790,
+    "lat": -15.595100,
+    "lon": -56.092258,
     "appid": api_key,
     "cnt": 4,
 }
@@ -21,4 +26,12 @@ for hour_data in weather_data["list"]:
     if int(condition_code) < 700:
         will_rain = True
 if will_rain:
-    print("Bring an umbrella.")
+    client = Client(account_sid, auth_token)
+    message = client.messages \
+                    .create(
+                        body="It's going to rain today. Remember to bring an umbrella.",
+                        from_='+16508307907',
+                        to='+5571999932200'
+                    )
+
+    print(message.status)
