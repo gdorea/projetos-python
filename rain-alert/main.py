@@ -4,8 +4,8 @@ from twilio.rest import Client
 
 api_key = "5791e486f3436f2600f0f91957f9246a"
 
-account_sid = os.environ["ACf56ab9e600b235fdf9aef11e2ec0f778"]
-auth_token = os.environ["c790615189784d3a1d2dacb663e3da31"]
+account_sid = os.environ.get("ACCOUNT_SID_KEY")
+auth_token = os.environ.get("AUTH_TOKEN_KEY")
 
 parameters = {
     "lat": -15.595100,
