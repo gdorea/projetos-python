@@ -1,4 +1,11 @@
 import requests
+import os
+from twilio.rest import Client
+
+api_key = "5791e486f3436f2600f0f91957f9246a"
+
+account_sid = os.environ.get("ACCOUNT_SID_KEY")
+auth_token = os.environ.get("AUTH_TOKEN_KEY")
 
 STOCK = "TSLA"
 COMPANY_NAME = "Tesla Inc"
@@ -8,8 +15,8 @@ API_KEY_NEWS = "2e5b729e8d954bb5b7327d1f96f1f01a"
 response = requests.get(f"https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={STOCK}&apikey={API_KEY_STOCK}")
 response.raise_for_status()
 data = response.json()
-#yesterday = data["Time Series (Daily)"]["2024-04-12"]["4. close"]
-#day_before_yesterday = data["Time Series (Daily)"]["2024-04-11"]["4. close"]
+yesterday = data["Time Series (Daily)"]["2024-04-12"]["4. close"]
+day_before_yesterday = data["Time Series (Daily)"]["2024-04-11"]["4. close"]
 
 response_news = requests.get(f"https://newsapi.org/v2/everything?q=tesla&from=2024-04-15&sortBy=publishedAt&apiKey={API_KEY_NEWS}")
 response_news.raise_for_status()
@@ -18,29 +25,34 @@ data_news = response_news.json()
 ## STEP 1: Use https://www.alphavantage.co
 # When STOCK price increase/decreases by 5% between yesterday and the day before yesterday then print("Get News").
 
-#percentage = ((float(day_before_yesterday) / float(yesterday)) - 1) * 100
+percentage = ((float(day_before_yesterday) / float(yesterday)) - 1) * 100
 
-#if day_before_yesterday > yesterday:
-#    percentage = percentage * -1
-#else:
-#    percentage = percentage
-
-#if percentage > 2 or percentage < -2:
-#    pass
-
+if day_before_yesterday > yesterday:
+    percentage = percentage * -1
+else:
+    percentage = percentage
 
 ## STEP 2: Use https://newsapi.org
 # Instead of printing ("Get News"), actually get the first 3 news pieces for the COMPANY_NAME. 
 
-for n in range(3):
-    print(f"{STOCK}: %")
-    print("Headline: ", data_news["articles"][n]["title"])
-    print("Brief: ", data_news["articles"][n]["description"])
-    n =+ 1
+if percentage > 2 or percentage < -2:
+    for n in range(3):
+        print(f"{STOCK}: {int(percentage)}%")
+        print("Headline: ", data_news["articles"][n]["title"])
+        print("Brief: ", data_news["articles"][n]["description"])
+        n =+ 1
+
 
 ## STEP 3: Use https://www.twilio.com
 # Send a seperate message with the percentage change and each article's title and description to your phone number. 
 
+client = Client(account_sid, auth_token)
+message = client.messages \
+                    .create(
+                        body="",
+                        from_='+16508307907',
+                        to='+5571999932200'
+                    )
 
 #Optional: Format the SMS message like this: 
 """
